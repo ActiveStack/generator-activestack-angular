@@ -10,40 +10,6 @@ module.exports = yeoman.Base.extend({
       'Welcome to the astonishing ' + chalk.red('ActiveStack AngularJS') + ' generator!'
     ));
 
-    // var done = this.async();
-    // this.prompt([
-    // {
-    //   type: 'input',
-    //   name: 'name',
-    //   message: 'Your project name',
-    //   //Defaults to the project's folder name if the input is skipped
-    //   default: this.appname
-    // },
-    // {
-    //   type: 'input',
-    //   name: 'userAnchorClass',
-    //   message: 'Your User Anchor Class',
-    //   //Defaults to the project's folder name if the input is skipped
-    //   default: "com." + this.appname.toLowerCase() + ".mo.User"
-    // },
-    // {
-    //   type: 'list',
-    //   name: 'angularVersion',
-    //   message: 'Which version of AngularJS would you like to use?',
-    //   choices: [
-    //   {
-    //     value: '1',
-    //     name: 'AngularJS 1.2.0-rc.3',
-    //     checked: true
-    //   }
-    //   ]
-    // }
-    // ], function(answers) {
-    //   this.props = answers
-    //   // this.log(answers.name);
-    //   done();
-    // }.bind(this));
-
     var prompts = [
     {
       type: 'input',
@@ -81,7 +47,6 @@ module.exports = yeoman.Base.extend({
     ];
 
     return this.prompt(prompts).then(function (props) {
-      // To access props later use this.props.someAnswer;
       this.props = props;
     }.bind(this));
   },
