@@ -25,7 +25,7 @@ yo activestack-angular
 
 ## License
 
-Apache-2.0 © [Collin Brown]()
+Apache-2.0 © [ActiveStack]()
 
 
 [npm-image]: https://badge.fury.io/js/generator-activestack-angular.svg
