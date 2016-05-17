@@ -60,6 +60,13 @@ module.exports = yeoman.Base.extend({
       default: "com." + this.appname.toLowerCase() + ".mo.User"
     },
     {
+      type: 'input',
+      name: 'gatewayIp',
+      message: 'Your ActiveStack Gateay IP Address',
+      //Defaults to the project's folder name if the input is skipped
+      default: "127.0.0.1"
+    },
+    {
       type: 'list',
       name: 'angularVersion',
       message: 'Which version of AngularJS would you like to use?',
@@ -135,6 +142,13 @@ module.exports = yeoman.Base.extend({
       }
     );
     this.fs.copyTpl(
+      this.templatePath('_app/js/activestack/ActiveStackConfig.js'),
+      this.destinationPath('app/js/activestack/ActiveStackConfig.js'),
+      {
+        gatewayIp: this.props.gatewayIp
+      }
+    );
+    this.fs.copyTpl(
       this.templatePath('_app/js/app.js'),
       this.destinationPath('app/js/app.js'),
       {
@@ -198,10 +212,6 @@ module.exports = yeoman.Base.extend({
     this.fs.copy(
       this.templatePath('class_include_list.html'),
       this.destinationPath('class_include_list.html')
-    );
-    this.fs.copy(
-      this.templatePath('_app/js/activestack'),
-      this.destinationPath('app/js/activestack')
     );
     this.fs.copy(
       this.templatePath('_app/oauth.html'),
