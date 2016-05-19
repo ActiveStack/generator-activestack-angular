@@ -23,7 +23,7 @@ module.exports = yeoman.Base.extend({
       name: 'userAnchorClass',
       message: 'Your User Anchor Class',
       //Defaults to the project's folder name if the input is skipped
-      default: "com." + this.appname.toLowerCase() + ".mo.User"
+      default: "com." + this.appname.toLowerCase().replace(/\W+/g, "_") + ".mo.User"
     },
     {
       type: 'input',
@@ -43,11 +43,59 @@ module.exports = yeoman.Base.extend({
         checked: true
       }
       ]
+    },
+    {
+      type: 'checkbox',
+      name: 'authProvidersSelection',
+      message: 'Which Auth Provider(s) would you like to use?',
+      choices: [
+      {
+        value: 'ACTIVESTACK:BASIC',
+        name: 'ActiveStack Basic Auth',
+        checked: true
+      },
+      {
+        value: 'CUSTOM',
+        name: 'Custom Auth',
+        checked: false
+      }
+      ]
     }
     ];
 
+/**
+                "ACTIVESTACK:BASIC":{
+                    name:"ACTIVESTACK:BASIC",
+                    redirectUri: "",
+                    appKey: "",
+                    authUrl: ""
+                }
+**/
+
     return this.prompt(prompts).then(function (props) {
       this.props = props;
+
+      // console.log(props.authProvidersSelection['ACTIVESTACK:BASIC']);
+      // console.log(props);
+
+      var authProvidersList = [];
+      if (props.authProvidersSelection) {
+        for(var i=0; i<props.authProvidersSelection.length; i++) {
+          var nextAuthProviderName = props.authProvidersSelection[i];
+          // if (authProvidersList !== "") {
+          //   authProvidersList += ",";
+          // }
+
+          if (nextAuthProviderName === 'CUSTOM') {
+            nextAuthProviderName = props.name + ':CUSTOM';
+          }
+
+          authProvidersList.push('"' + nextAuthProviderName + '":{name:"' + nextAuthProviderName + '", redirectUri: "", appKey: "", authUrl: ""}');
+        }
+      }
+
+      props.authProvidersList = authProvidersList;
+
     }.bind(this));
   },
 
@@ -110,7 +158,8 @@ module.exports = yeoman.Base.extend({
       this.templatePath('_app/js/activestack/ActiveStackConfig.js'),
       this.destinationPath('app/js/activestack/ActiveStackConfig.js'),
       {
-        gatewayIp: this.props.gatewayIp
+        gatewayIp: this.props.gatewayIp,
+        authProvidersList: this.props.authProvidersList
       }
     );
     this.fs.copyTpl(
